@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Choose Your Destiny</title>
+  <link rel="stylesheet" href="main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;400;500;600;700&family=Metal+Mania&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+  <style>
+    /* Body background image that loads first */
+    body {
+      margin: 0;
+      height: 100vh;
+      background: url('Menu-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      /* hide content initially */
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s ease;
+      font-family: 'Atma', sans-serif;
+      color: #FFE81F;
+      text-shadow: 0 0 10px black;
+    }
+
+    /* Show content */
+    body.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Optional: smooth fade in for intro texts */
+    .intro-text {
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <button id="music-toggle" style="display: none;">Pause Music</button>
+
+  <div id="start-button-container">
+    <button id="start-button">Click to start</button>
+  </div>
+
+  <div id="intro-container" style="display: none;">
+    <p class="intro-text">A long time ago, in a galaxy far, far away...</p>
+    <p class="intro-text">The galaxy trembles beneath the weight of unrest.</p>
+    <p class="intro-text">The Jedi strive for peace and balance in the Force...</p>
+    <p class="intro-text">But as shadows rise</p>
+    <p class="intro-text"> whispers of power and vengeance stir in the void.</p>
+    <p class="intro-text">In the heart of the stars, an apprentice awakens...</p>
+    <p class="intro-text">Torn between the call of the Light...</p>
+    <p class="intro-text">And the seductive promise of the Dark Side.</p>
+    <p class="intro-text">Destiny awaits, shaped by a single choice...</p>
+    <p class="intro-text">The Force shall either guide you...</p>
+    <p class="intro-text">or consume you.</p>
+  </div>
+
+  <script>
+    const startButton = document.getElementById('start-button');
+    const startContainer = document.getElementById('start-button-container');
+    const introContainer = document.getElementById('intro-container');
+    const texts = document.querySelectorAll('.intro-text');
+    const musicToggle = document.getElementById('music-toggle');
+
+    const music = new Audio('star-wars-theme.mp3');
+    music.loop = true;
+
+    let current = 0;
+
+    // Function to fade out music before redirect
+    function fadeOutMusic(audio, duration = 2000, callback) {
+      let step = 50;
+      let fadeAmount = audio.volume / (duration / step);
+
+      const fadeInterval = setInterval(() => {
+        if (audio.volume > fadeAmount) {
+          audio.volume -= fadeAmount;
+        } else {
+          audio.volume = 0;
+          audio.pause();
+          clearInterval(fadeInterval);
+          if (callback) callback();
+        }
+      }, step);
+    }
+
+    function showNextText() {
+      if (current < texts.length) {
+        texts[current].style.opacity = 1;
+        setTimeout(() => {
+          texts[current].style.opacity = 0;
+          current++;
+          setTimeout(showNextText, 1000);
+        }, 3000);
+      } else {
+        localStorage.setItem('musicTime', music.currentTime);
+        localStorage.setItem('musicPlaying', !music.paused);
+
+        fadeOutMusic(music, 2000, () => {
+          window.location.href = 'choose-path.html';
+        });
+      }
+    }
+
+    startButton.addEventListener('click', () => {
+      const userConfirmed = confirm("This journey may change your destiny. Continue?");
+      if (userConfirmed) {
+        music.volume = 1;
+        music.play();
+        musicToggle.style.display = 'block'; 
+        startContainer.style.display = 'none';
+        introContainer.style.display = 'block';
+        showNextText();
+      } else {
+        startButton.style.display = 'none';
+        const refreshMessage = document.createElement('p');
+        refreshMessage.textContent = "Refresh the page to choose again.";
+        refreshMessage.style.color = "#FFE81F";
+        refreshMessage.style.fontFamily = "'Distant Galaxy', sans-serif";
+        refreshMessage.style.fontSize = "20px";
+        refreshMessage.style.marginTop = "20px";
+        refreshMessage.style.textShadow = "0 0 10px black";
+        refreshMessage.style.animation = "fadeIn 2s ease";
+        startContainer.appendChild(refreshMessage);
+      }
+    });
+
+    musicToggle.addEventListener('click', () => {
+      if (music.paused) {
+        music.play();
+        music.volume = 1;
+        musicToggle.textContent = 'Pause Music';
+      } else {
+        music.pause();
+        musicToggle.textContent = 'Play Music';
+      }
+    });
+
+    // Wait for the background image to load, then show content
+    function preloadBackground(url) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.src = url;
+        img.onload = resolve;
+      });
+    }
+
+    preloadBackground('Menu-bg.jpg').then(() => {
+      document.body.classList.add('visible');
+    });
+
+  </script>
+</body>
+</html>

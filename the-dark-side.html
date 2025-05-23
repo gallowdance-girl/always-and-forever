@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Dark Side</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;700&family=Metal+Mania&family=Orbitron:wght@400..900&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="dark-side.css" />
+</head>
+<body>
+
+  
+  <audio id="theme-music" autoplay loop>
+    <source src="dark-side.mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+
+  
+  <button id="back-btn">Back to Choice Page</button>
+  <button id="music-btn">Pause Music</button>
+
+ 
+  <div id="sith-popup" class="popup" style="display: flex;">
+    <div class="popup-content">
+      <h2>Are you sure, Apprentice?</h2>
+      <button id="yes-btn">Yes, my Master</button>
+      <button id="no-btn">No, take me back</button>
+    </div>
+  </div>
+
+  <!-- 🖤 Welcome Message -->
+  <div id="sith-welcome" style="text-align: center; margin-top: 50px; display: none;">
+    <h1 style="color: #ff0000; font-size: 4rem; font-family: 'Distant Galaxy', Orbitron; text-shadow: 0 0 15px #ff0000; font-weight: 1200;">
+      Welcome, Young Acolyte
+    </h1>
+    <p style="color: #cc0000; font-size: 1.5rem; font-family: 'Distant Galaxy', sans-serif; margin-top: -10px; font-weight: 900;">
+      So, young Acolyte, you have chosen the the darkness...
+    </p>
+    <p style="color: #cc0000; font-size: 1.5rem; font-family: 'Distant Galaxy', sans-serif; margin-top: -10px; margin-bottom: 40px; font-weight: 900;">
+      Your Master is expecting you...
+    </p>
+  </div>
+
+  
+  <div id="clan-grid"></div>
+
+  <div id="modal" onclick="closeModal(event)">
+    <div id="modal-content">
+      <button id="modal-close" onclick="closeModal(event)">&times;</button>
+      <p id="modal-text"></p>
+    </div>
+  </div>
+
+  <!-- 🧠 JavaScript Logic -->
+  <script src="dark-side.js"></script> 
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const music = document.getElementById("theme-music");
+      const musicBtn = document.getElementById("music-btn");
+      const popup = document.getElementById("sith-popup");
+      const yesBtn = document.getElementById("yes-btn");
+      const noBtn = document.getElementById("no-btn");
+      const welcomeMsg = document.getElementById("sith-welcome");
+      const backBtn = document.getElementById("back-btn");
+      const clanGrid = document.getElementById("clan-grid");
+      const modal = document.getElementById("modal");
+      const modalText = document.getElementById("modal-text");
+
+      music.play().catch(() => {
+        musicBtn.textContent = "Play Music";
+      });
+
+      yesBtn.onclick = () => {
+        popup.style.display = "none";
+        welcomeMsg.style.display = "block";
+        music.play().catch(() => {
+          musicBtn.textContent = "Play Music";
+        });
+      };
+
+      noBtn.onclick = backBtn.onclick = () => {
+        window.location.href = "choose-path.html";
+      };
+
+      musicBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (music.paused) {
+          music.play();
+          musicBtn.textContent = "Pause Music";
+        } else {
+          music.pause();
+          musicBtn.textContent = "Play Music";
+        }
+      };
+
+      window.closeModal = function (event) {
+        if (event.target.id === 'modal' || event.target.id === 'modal-close') {
+          modal.style.display = 'none';
+        }
+      };
+
+      function openModal(text) {
+        modalText.textContent = text;
+        modal.style.display = 'flex';
+      }
+
+      const texts = [
+	    "You're the only Force I ever want to surrender to.",
+		"Your love burns brighter than any lightsaber I've ever wielded.",
+		"I’d fall to the Dark Side over and over again if it meant falling into your arms.",
+		"When I close my eyes, I see galaxies — but none as beautiful as you.",
+		"Even the Emperor himself couldn't command my heart the way you do.",
+		"I crave your touch like a Sith craves power — completely, obsessively.",
+		"Every smile from you is like a dark side surge — I never want to come down.",
+		"You're the passion behind every war I’d start, and the peace I’d never admit I need.",
+		"If loving you is treason, then let me be the galaxy’s most wanted.",
+		"You're more dangerous than a thousand Sith Lords —and I’m addicted to the thrill of you.",
+		"My love, if we ruled the galaxy, I’d name every star after you.",
+		"I don’t need Jedi teachings. I need your hands, your voice, your darkness.",
+		"In a universe of chaos, your love is the only constant I obey.",
+		"I'd turn my back on the Code just to hear you whisper my name again.",
+		"You ignite my soul like kyber crystals in the heart of battle.",
+		"Forget the balance. I want a galaxy that tilts in your favor.",
+		"You're the Sith to my saber — the power I was born to wield.",
+		"I’ve conquered fears, crushed enemies, and yet… I’d kneel only for you.",
+		"Your love is my greatest strength—and my most exquisite weakness.",
+		"I don't want redemption. I want you.",
+		"I’d rewrite the history of the Sith just to add your name to every legend.",
+		"You've corrupted me beautifully — and I never want to be saved.",
+		"I feel your presence like a tremor in the Force — always there, always drawing me in.",
+		"You are the storm, and I — I am the lightning you command.",
+		"Even in the deepest void, I’d find you. You're my constant star.",
+		"Every breath you take feels like destiny whispering we were meant to collide.",
+		"You're my dark obsession — deadly, divine, and utterly irresistible.",
+		"Together we don’t just burn — we obliterate the stars.",
+		"You've become my purpose, my passion, my perfect chaos.",
+		"Let others chase peace — I want the war that is your love.",
+		"If the Force created you to test me, I’ve already failed — happily.",
+		"You're not just a part of my story, my love. You’re the plot twist that changed everything.",
+		"Rule of Two? No, darling — we are the rule.",
+		"You’re the echo in every Force vision I’ve ever had — beautiful, terrifying, inevitable.",
+		"Let the galaxy tremble — we are Sith, we are lovers, we are legend.",  
+		"You're not just in my heart — you’ve seized the throne and declared yourself emperor.",
+		"I ache for your presence like a Sith craves vengeance.",
+		"You’ve become my obsession — and I wouldn't have it any other way.",
+		"Every second without you is a battlefield — and I’m losing.",
+		"You don't just tempt me — you command me.",
+		"If destruction is the price of your love, I’d burn the galaxy twice.",
+		"You are my destiny — written in the stars and sealed in blood.",
+		"I'd bend the Force itself just to keep you close.",
+		"You’re the only war I never want to end.",
+		"Let the Jedi whisper of peace — I want the chaos of you.",
+		"You’ve turned my heart into a weapon — and you wield it flawlessly.",
+		"I no longer fear death — only a life without you.",
+		"You're not a chapter in my story. You're the entire dark saga.",
+		"My love for you is more ancient, more cursed, and more unstoppable than any Sith ritual.",
+		"Let the galaxy rot. As long as I have you, I have everything.",
+		"Your voice is more seductive than any Sith chant.",
+		"If rage fuels power, then love for you makes me invincible.",
+		"My passion for you could shatter stars and still not be enough.",
+		"You’re the phantom that haunts my mind, the fire that scars my soul — and I adore it.",
+		"You and I were forged in darkness, and in that darkness—we are infinite.",
+		"I'd drain the stars of their light just to see your shadow more clearly.",
+		"You're the storm I've been waiting centuries to be destroyed by.",
+		"Every breath you take rewrites the prophecy — I was meant for you.",
+		"My loyalty is no longer to the Sith... it's to us.",
+		"The galaxy fears love like ours — because it can't be tamed.",
+		"You're not my weakness. You're my edge.",
+		"If I must fall, let it be from the cliff of your kiss.",
+		"You’re the reason I choose chaos over calm, fire over peace, lust over logic.",
+		"My heart is no longer mine — it kneels to you.",
+		"I don’t just crave you — I worship your darkness.",
+		"You’re not a temptation. You’re a destiny that devours.",
+		"I feel you across lightyears — your soul echoes louder than the Force.",
+		"You’re the only secret I’d never tell, and the only truth I’d never deny.",
+		"I want you like a Sith wants vengeance — relentless, unending, absolute.",
+		"Your absence is worse than exile. It is torment beyond death.",
+		"Even a thousand Jedi couldn't sever this bond between us.",
+		"You haunt me like a phantom from the Unknown Regions — and I don’t want an exorcism.",
+		"You're the burn in my veins, the scream in my silence.",
+		"Let the galaxy break. I will rebuild it from ash and name it after you.",
+		"Every touch from you is a weapon — and I offer myself willingly.",
+		"You don't complete me — you unleash me.",
+		"My love for you is forbidden, corrupted, and gloriously eternal.",
+		"If this is madness, then I never want to be sane again.",
+		"You're my ritual, my ruin, my resurrection.",
+		"The longer I love you, the more monstrous I become — and I cherish it.",
+		"Your presence is darker than the void, and twice as addictive.",
+		"I didn’t fall to the Dark Side — I was pulled by the gravity of your soul.",
+		"Let them call me mad — I have your love. That’s power enough.",
+		"You don’t need to use the Force on me. I’m already under your control.",
+		"I'd kneel to no master — but I would bleed for you.",
+		"You are not my conquest. You are my collapse — and I welcome it.",
+		"I didn’t lose myself to the Dark Side — I gave myself to you.",
+		"You don’t rule my heart — you conquered it.",
+		"Your love is the only law I follow, and the only sin I celebrate.",
+		"I’d break every chain in the galaxy just to feel your fingers lace with mine.",
+		"One whisper from you, and I’d betray a thousand empires.",
+		"Let them fear our love — it was never made for fragile hearts.",
+		"When you touch me, I don’t feel alive. I feel invincible.",
+		"You could order my destruction, and I would still beg to die in your arms.",
+		"There’s no redemption for me — I fell willingly into the abyss of you.",
+		"Even in the void between stars, I would find you by instinct alone.",
+		"I’ve tasted power, command, fear — but nothing like you.",
+		"You're the battle I choose to lose, again and again.",
+		"If the Force is fate, then you are the curse I’d never undo.",
+		"My heart no longer beats for survival — it beats for your name."
+	  ];
+
+      const boxCountsPerRow = [10, 10, 9, 9, 8, 8, 7, 7, 6, 6, 5, 5, 4, 3, 2, 1];
+      let textIndex = 0;
+
+      boxCountsPerRow.forEach(count => {
+        const row = document.createElement('div');
+        row.classList.add('row');
+
+        for (let i = 0; i < count; i++) {
+          if (textIndex >= texts.length) break;
+          const box = document.createElement('div');
+          box.classList.add('clan-box');
+          box.textContent = `Box ${textIndex + 1}`;
+          const currentIndex = textIndex;
+          box.addEventListener('click', () => openModal(texts[currentIndex]));
+          row.appendChild(box);
+          textIndex++;
+        }
+
+        clanGrid.appendChild(row);
+      });
+    });
+  </script>
+</body>
+</html>
