@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
   <title>Choose Your Destiny</title>
   <link rel="stylesheet" href="main.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -9,13 +10,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Atma:wght@300;400;500;600;700&family=Metal+Mania&family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 
   <style>
-    /* Body background image that loads first */
     body {
       margin: 0;
       height: 100vh;
       background: url('Menu-bg.jpg') no-repeat center center fixed;
       background-size: cover;
-      /* hide content initially */
       opacity: 0;
       visibility: hidden;
       transition: opacity 1s ease;
@@ -24,13 +23,11 @@
       text-shadow: 0 0 10px black;
     }
 
-    /* Show content */
     body.visible {
       opacity: 1;
       visibility: visible;
     }
 
-    /* Optional: smooth fade in for intro texts */
     .intro-text {
       opacity: 0;
       transition: opacity 1s ease;
